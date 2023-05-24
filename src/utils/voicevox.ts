@@ -1,8 +1,6 @@
 
 
 
-
-
 export const getAudio = async (text: string, model: any, cb?: Function) => {
     const sid = new Date().getTime() + 'a_whw'
 
@@ -15,7 +13,7 @@ export const getAudio = async (text: string, model: any, cb?: Function) => {
         sample_rate: 16000,
         audio_format:'wav'
     }
-    const res = await fetch('/audio', {
+    const res = await fetch(process.env.REACT_APP_AUDIO_URL || '', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
