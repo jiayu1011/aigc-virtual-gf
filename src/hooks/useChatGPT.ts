@@ -15,37 +15,34 @@ export const useChatGPT = () => {
             chat
         ]
 
+        setReply('', true)
+        setReplyCompleted(false)
+
+        const payload: OpenAIStreamPayload = {
+            //model: "gpt-4",
+            model: "gpt-3.5-turbo",
+            messages: messages,
+            temperature: 0.7,
+            top_p: 1,
+            frequency_penalty: 0,
+            presence_penalty: 0,
+            max_tokens: 1000,
+            stream: true,
+            n: 1,
+        };
+
         try {
-            setReply('', true)
-            setReplyCompleted(false)
+            const stream = await OpenAIChatStream(payload)
+            if (!stream) return
 
-            const payload: OpenAIStreamPayload = {
-                //model: "gpt-4",
-                model: "gpt-3.5-turbo",
-                messages: messages,
-                temperature: 0.7,
-                top_p: 1,
-                frequency_penalty: 0,
-                presence_penalty: 0,
-                max_tokens: 1000,
-                stream: true,
-                n: 1,
-            };
-
-            const data = await OpenAIChatStream(payload)
-            if (!data) return
-
-            console.log('fetch chatgpt', data)
-
-            const reader = data.getReader()
-            const decoder = new TextDecoder()
-            let done = false
-            // 解码二进制流
+            const reader = stream.getReader()
+            let done, value
+            // 读取解析后的流
             while (!done) {
-                const {value, done: doneReading} = await reader.read()
-                done = doneReading
-                const chunkValue = decoder.decode(value)
-                setReply(chunkValue, false) // 每解码一段数据，就附加到chats结尾
+                ({done, value} = await reader.read())
+                if (done) break
+                console.log('text after parser', value)
+                setReply(value, false) // 从流中每读取到一段数据，就附加到chats结尾
             }
             setReplyCompleted(true)
         } catch (e: any) {

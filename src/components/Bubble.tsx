@@ -1,10 +1,11 @@
-import {useChatGPT} from "../hooks/useChatGPT";
 import {useMemo} from "react";
 
-export const Bubble = () => {
-    const { getLastChat, chats, replyCompleted } = useChatGPT()
+export const Bubble = (props: any) => {
+    const { getLastChat, chats, replyCompleted } = props
 
-    const chat = useMemo(() => getLastChat(), [chats])
+    const chat = useMemo(() => {
+        return getLastChat()
+    }, [chats])
 
     return (
         <>

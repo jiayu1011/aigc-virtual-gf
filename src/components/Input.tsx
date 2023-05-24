@@ -1,8 +1,8 @@
 import {useChatGPT} from "../hooks/useChatGPT";
 
 
-export const Input = () => {
-    const {fetchStream} = useChatGPT()
+export const Input = (props: any) => {
+    const {fetchStream} = props
 
     const handleKeyDown = (e: any) => {
         if (e.keyCode !== 13) return
