@@ -1,17 +1,13 @@
-import {useMemo} from "react";
+import {memo} from "react";
 
-export const Bubble = (props: any) => {
-    const { getLastChat, chats, replyCompleted } = props
-
-    const chat = useMemo(() => {
-        return getLastChat()
-    }, [chats])
+export const Bubble = memo((props: any) => {
+    const { text, replyCompleted } = props
 
     return (
         <>
             <div>
-                {chat && chat.content? chat.content : replyCompleted? 'nothing...':'让我想想...'}
+                {text? text : replyCompleted? 'nothing...':'让我想想...'}
             </div>
         </>
     )
-}
+})

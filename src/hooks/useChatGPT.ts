@@ -64,9 +64,7 @@ export const useChatGPT = () => {
         })
     }
 
-    const getLastChat = () => {
-        return chats.filter(item => item.role === 'assistant').slice(-1)[0]
-    }
+    const getLastChat = () => chats.filter(item => item.role === 'assistant').slice(-1)[0]
 
     return {
         fetchStream,

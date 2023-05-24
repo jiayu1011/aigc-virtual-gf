@@ -14,14 +14,14 @@ export async function OpenAIChatStream(payload: OpenAIStreamPayload) {
     const res: any = await fetch("/chat", {
         headers: {
             "Content-Type": "application/json",
-            'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY ?? ""}`,
+            'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY || ""}`,
         },
         method: "POST",
         body: JSON.stringify(payload),
     })
 
     if (!res.ok) throw new Error(res.statusText)
-    console.log('fecth chatgpt', res)
+    // console.log('fecth chatgpt', res)
 
     return new ReadableStream({
         async start(controller) {
@@ -65,8 +65,8 @@ export async function OpenAIChatStream(payload: OpenAIStreamPayload) {
                     ({ value, done } = await reader.read())
                     if (done) break
 
-                    console.log('stream data before decode', value)
-                    console.log('stream data after decode', decoder.decode(value))
+                    // console.log('stream data before decode', value)
+                    // console.log('stream data after decode', decoder.decode(value))
                     parser.feed(decoder.decode(value))
                 }
             } catch (e) {

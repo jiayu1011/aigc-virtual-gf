@@ -1,31 +1,28 @@
 import {useState} from "react";
 import * as PIXI from 'pixi.js'
 import {Live2DModel} from "pixi-live2d-display";
+import {getAudio} from "../utils/voicevox";
 
-(window as any).PIXI = PIXI
-
+if (!process.env.REACT_APP_MODEL_PATH) {
+    throw new Error("missing model path")
+}
 
 export const useModel = () => {
     const [model, setModel] = useState<any>() // live2d model
     const [app, setApp] = useState<any>() // pixi app
-    // const [originalModelHeight, setOriginalModelHeight] = useState(0)
-    // const [originalModelWidth, setOriginalModelWidth] = useState(0)
 
     const initLive2D = async (t?: PIXI.Application) => {
         const current = t ?? app
         if (!current) return
 
-        const model = await Live2DModel.from('/Resources/Hiyori/Hiyori.model3.json')
+        const model = await Live2DModel.from(process.env.REACT_APP_MODEL_PATH || '')
 
         console.log(model)
 
         current.stage.addChild(model)
 
-        // setOriginalModelHeight(model.height)
-        // setOriginalModelWidth(model.width)
-
         model.anchor.set(0.5, 0.5)
-        //
+
         const modelAspectRatio = model.width / model.height
         const screenAspectRatio = current.view.width / current.view.height
         let scale = 1
@@ -35,10 +32,11 @@ export const useModel = () => {
             scale = current.view.width / model.width
         }
 
-        model.scale.set(scale * 2)
+        model.scale.set(scale * 1)
+        // model.scale.set(scale * 2)
+        model.position.set(current.view.width / 2, current.view.height / 2)
 
-        model.position.set(current.view.width / 2, current.view.height)
-
+        setModel(model)
     }
 
     const init = () => {
@@ -60,11 +58,18 @@ export const useModel = () => {
         initLive2D(pixiApp)
     }
 
+    const lipSync = async (text: string) => {
+        if (!model || !app) return
+
+        // const {start, stop} = await getAudio(text, model, () => {
+        //
+        // })
+    }
+
 
     return {
-        // model,
-        // app,
+        model,
+        app,
         init,
-
     }
 }
