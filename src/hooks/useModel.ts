@@ -1,7 +1,8 @@
 import {useState} from "react";
 import * as PIXI from 'pixi.js'
-import {Live2DModel} from "pixi-live2d-display";
+import {Live2DModel, MotionPriority} from "pixi-live2d-display";
 import {getAudio} from "../utils/voicevox";
+import {blob2Base64} from "../utils/util";
 
 if (!process.env.REACT_APP_MODEL_PATH) {
     throw new Error("missing model path")
@@ -10,6 +11,8 @@ if (!process.env.REACT_APP_MODEL_PATH) {
 export const useModel = () => {
     const [model, setModel] = useState<any>() // live2d model
     const [app, setApp] = useState<any>() // pixi app
+
+    const motionManager = model?.internalModel.motionManager
 
     const initLive2D = async (t?: PIXI.Application) => {
         const current = t ?? app
@@ -59,11 +62,16 @@ export const useModel = () => {
     }
 
     const lipSync = async (text: string) => {
-        if (!model || !app) return
+        if (!model || !app || !text) return
 
-        // const {start, stop} = await getAudio(text, model, () => {
-        //
-        // })
+        console.log('before get audio', text)
+        await getAudio(text, model, async (data: any) => {
+            const blob = new Blob([data], { type: 'audio/wav' })
+            const b64: any = await blob2Base64(blob)
+
+            model.motion('Happy', 0, MotionPriority.NORMAL, b64)
+
+        })
     }
 
 
@@ -71,5 +79,6 @@ export const useModel = () => {
         model,
         app,
         init,
+        lipSync
     }
 }

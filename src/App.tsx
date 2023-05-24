@@ -7,7 +7,7 @@ import {useChatGPT} from "./hooks/useChatGPT";
 import {useModel} from "./hooks/useModel";
 
 const App = () => {
-    const {init, model} = useModel()
+    const {init, lipSync, model} = useModel()
     const {fetchStream, getLastChat, chats, replyCompleted} = useChatGPT()
 
     const chat = useMemo(() => getLastChat(), [chats])
@@ -16,6 +16,7 @@ const App = () => {
         try {
             if (!chat) return
 
+            lipSync(chat.content)
         } catch (e: any) {
             throw new Error('声音合成失败', e)
         }
@@ -26,10 +27,6 @@ const App = () => {
         if (!replyCompleted || !chat || !model) return
 
         handleSynthesize()
-        console.log('trigger Tap 1')
-        model.motion('Tap', 1)
-        model.internalModel.motionManager.on('motionFinish', () => {
-        })
 
     }, [replyCompleted, chat, model])
 

@@ -12,12 +12,12 @@ module.exports = function (app) {
         })
     )
     app.use(
-        createProxyMiddleware('/test',{
-            target: 'https://www.baidu.com',
+        createProxyMiddleware('/audio',{
+            target: 'https://tts.vip.sankuai.com/api/v1/tts',
             changeOrigin: true,
-            ws: true,
+            logLevel: 'debug',
             pathRewrite: {
-                '^/test': ''
+                '^/audio': ''
             }
         })
     )

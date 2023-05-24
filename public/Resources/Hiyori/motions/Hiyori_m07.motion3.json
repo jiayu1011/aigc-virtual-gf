@@ -644,9 +644,7 @@
 		{
 			"Target": "Parameter",
 			"Id": "ParamMouthOpenY",
-			"Segments": [
-			
-			]
+			"Segments": []
 		},
 		{
 			"Target": "Parameter",
