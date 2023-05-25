@@ -1,10 +1,10 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import './App.css';
 import {Live2D} from "./components/Live2D";
 import {Bubble} from "./components/Bubble";
 import {Input} from "./components/Input";
 import {useChatGPT} from "./hooks/useChatGPT";
 import {useModel} from "./hooks/useModel";
+import style from './App.module.scss';
 
 const App = () => {
     const {init, lipSync, model} = useModel()
@@ -27,26 +27,16 @@ const App = () => {
         if (!replyCompleted || !chat || !model) return
 
         handleSynthesize()
-
     }, [replyCompleted, chat, model])
 
     return (
-        <div>
-            <div style={{height: '100vh', width: '100vw', zIndex: '1', position: 'absolute'}}>
-                <Live2D {...{init, model}}></Live2D>
+        <div className={style.container}>
+            <div className={style.live2d}>
+                <Live2D {...{init, model}}/>
             </div>
-            <div style={{
-                height: '100vh',
-                width: '100vw',
-                zIndex: '2',
-                position: 'absolute',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'space-between'
-            }}>
-                <div style={{marginTop: '50px'}}><Bubble text={chat?.content} {...{replyCompleted}} /></div>
-                <div style={{marginBottom: '50px'}}><Input {...{fetchStream, getLastChat, chats, replyCompleted}} /></div>
+            <div className={style.mask}>
+                {replyCompleted && <Bubble text={chat?.content} needsFaceIcon />}
+                <Input {...{fetchStream, getLastChat, chats, replyCompleted}} />
             </div>
         </div>
 

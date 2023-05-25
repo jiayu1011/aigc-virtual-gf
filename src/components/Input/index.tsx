@@ -1,5 +1,6 @@
 import {useEffect, useMemo, useRef, useState} from "react";
-import {generateRandomString} from "../utils/util";
+import {generateRandomString} from "../../utils/util";
+import style from './index.module.scss'
 
 export const Input = (props: any) => {
     const {fetchStream} = props
@@ -101,13 +102,15 @@ export const Input = (props: any) => {
     }, [])
 
     return (
-        <>
-            <div style={{display: 'flex'}}>
-                <input value={text} placeholder='跟我聊聊天吧～' onKeyDown={handleKeyDown} onChange={handleInputChange} />
-                {!isRecording && <button onClick={handleStartRecording}>start recording</button>}
-                {isRecording && <button onClick={handleStopRecording}>stop</button>}
-                <button onClick={handleChatSubmit}>⬆️</button>
+        <div className={style.container}>
+            <div className={style.wrapper}>
+                <input className={style.input} value={text} placeholder='跟我聊聊天吧～' onKeyDown={handleKeyDown} onChange={handleInputChange} />
+                <div className={style.buttonGroup}>
+                    {!isRecording && <div className={style.audioStartBtn} onClick={handleStartRecording}></div>}
+                    {isRecording && <div className={style.audioStopBtn} onClick={handleStopRecording}></div>}
+                    <div className={style.sendBtn} onClick={handleChatSubmit}></div>
+                </div>
             </div>
-        </>
+        </div>
     )
 }

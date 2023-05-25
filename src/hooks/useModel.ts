@@ -40,8 +40,8 @@ export const useModel = () => {
         // model.position.set(current.view.width / 2, current.view.height / 2)
 
         // 半身
-        model.scale.set(scale * 1.8)
-        model.position.set(current.view.width / 2, current.view.height * 0.85)
+        model.scale.set(scale * 1.6)
+        model.position.set(current.view.width*(2/5), current.view.height*(6/7))
 
         setModel(model)
     }
