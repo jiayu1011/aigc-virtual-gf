@@ -41,7 +41,7 @@ export const useChatGPT = () => {
             while (!done) {
                 ({done, value} = await reader.read())
                 if (done) break
-                console.log('text after parser', value)
+                // console.log('text after parser', value)
                 setReply(value, false) // 从流中每读取到一段数据，就附加到chats结尾
             }
             setReplyCompleted(true)

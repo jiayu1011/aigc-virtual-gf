@@ -1,6 +1,3 @@
-
-
-
 export const getAudio = async (text: string, model: any, cb?: Function) => {
     const sid = new Date().getTime() + 'a_whw'
 
@@ -17,7 +14,7 @@ export const getAudio = async (text: string, model: any, cb?: Function) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Token': 'v1.d1ee064814b044dbaade60f4f098fe48.86400000.1684912005938-1149628490354581520',
+            'Token': 'v1.42e0e882d1144b6893de6c50b77a4c57.86400000.1685003823235-1149628490354581520',
             'SessionID': sid
         },
         body: JSON.stringify(body)
