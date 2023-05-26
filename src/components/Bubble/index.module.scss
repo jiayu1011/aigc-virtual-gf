@@ -1,5 +1,49 @@
+@use 'sass:math';
+
+@function sqrt ($num) {
+  @return math.div(math.floor(math.sqrt($num) * 1000), 1000)
+}
+
+$bubble-padding-left: 15px;
+$bubble-border: 2px;
+
 .container {
   position: absolute;
-  top: 250px;
-  right: 890px;
+  z-index: 2;
+  top: 350px;
+  left: 1250px;
+  width: 375px;
+
+  .bubbleHead {
+    position: absolute;
+    z-index: 2;
+    transform: rotate(45deg);
+    top: $bubble-padding-left*(1-(calc(sqrt(2)/2))) + 20px;
+    left: $bubble-padding-left*(1-(calc(sqrt(2)/2)));
+
+    height: sqrt(2) * $bubble-padding-left;
+    width: sqrt(2) * $bubble-padding-left;
+    background: #FFFFFF;
+    border-bottom: $bubble-border solid #F4E3FF;
+    border-left: $bubble-border solid #F4E3FF;
+    box-shadow: 0 0 12px 0 rgba(0,0,0,0.05);
+  }
+
+  .wrapper {
+    position: absolute;
+    z-index: 1;
+    background: #FFFFFF;
+    border: $bubble-border solid #F4E3FF;
+    box-shadow: 0 0 12px 0 rgba(0,0,0,0.05);
+    border-radius: 10px;
+    left: $bubble-padding-left;
+    width: 100%;
+    min-height: 20px;
+    max-height: 460px;
+    padding: 25px;
+    overflow-y: scroll;
+
+  }
+
+
 }

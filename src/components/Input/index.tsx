@@ -46,41 +46,6 @@ export const Input = (props: any) => {
         setIsRecording(false)
     }
 
-    const taskId = useMemo(() => generateRandomString(32), [])
-    const token = '3c1ed2e75c2644d295646faa8173c9d0'
-    const appkey = 'HEWr26k1icPoDMa6'
-    const instruction = (type: string) => {
-        switch (type) {
-            case 'start':
-                return {
-                    "header": {
-                        "task_id": taskId,
-                        "message_id": generateRandomString(32),
-                        "namespace": "SpeechTranscriber",
-                        "name": 'StartTranscription',
-                        "appkey": appkey
-                    },
-                    "payload": {
-                        // "format": "opus",
-                        "sample_rate": 16000,
-                        "enable_intermediate_result": true, // 返回中间识别结果
-                    }
-                }
-            case 'stop':
-                return {
-                    "header": {
-                        "task_id": taskId,
-                        "message_id": generateRandomString(32),
-                        "namespace": "SpeechTranscriber",
-                        "name": 'StopTranscription',
-                        "appkey": appkey
-                    }
-                }
-        }
-
-
-    }
-
     const initSpeechRecognition = async () => {
         const recognition = new (window as any).webkitSpeechRecognition()
         recognition.lang = 'zh-CN'

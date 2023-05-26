@@ -5,9 +5,10 @@ import {Input} from "./components/Input";
 import {useChatGPT} from "./hooks/useChatGPT";
 import {useModel} from "./hooks/useModel";
 import style from './App.module.scss';
+import {Loading} from "./components/Loading";
 
 const App = () => {
-    const {init, lipSync, model} = useModel()
+    const {init, lipSync, model, isAudioReady} = useModel()
     const {fetchStream, getLastChat, chats, replyCompleted} = useChatGPT()
 
     const chat = useMemo(() => getLastChat(), [chats])
@@ -31,13 +32,13 @@ const App = () => {
 
     return (
         <div className={style.container}>
-            <div className={style.live2d}>
-                <Live2D {...{init, model}}/>
-            </div>
-            <div className={style.mask}>
-                {replyCompleted && <Bubble text={chat?.content} needsFaceIcon />}
-                <Input {...{fetchStream, getLastChat, chats, replyCompleted}} />
-            </div>
+            <Live2D {...{init, model}}/>
+            {chat && (
+                <Bubble needsFaceIcon>
+                    {replyCompleted&&isAudioReady ? <div>{chat.content}</div> : <Loading/>}
+                </Bubble>
+            )}
+            <Input {...{fetchStream, getLastChat, chats, replyCompleted}} />
         </div>
 
     );

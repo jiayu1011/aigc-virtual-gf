@@ -11,6 +11,7 @@ if (!process.env.REACT_APP_MODEL_PATH) {
 export const useModel = () => {
     const [model, setModel] = useState<any>() // live2d model
     const [app, setApp] = useState<any>() // pixi app
+    const [isAudioReady, setIsAudioReady] = useState<boolean>(false)
 
     const motionManager = model?.internalModel.motionManager
 
@@ -41,7 +42,7 @@ export const useModel = () => {
 
         // 半身
         model.scale.set(scale * 1.6)
-        model.position.set(current.view.width*(2/5), current.view.height*(6/7))
+        model.position.set(current.view.width*0.4, current.view.height*0.85)
 
         setModel(model)
     }
@@ -69,12 +70,12 @@ export const useModel = () => {
         if (!model || !app || !text) return
 
         // console.log('before get audio', text)
-        await getAudio(text, model, async (data: any) => {
-            const blob = new Blob([data], { type: 'audio/wav' })
-            const b64: any = await blob2Base64(blob)
+         await getAudio(text, model, async (data: any) => {
+             const blob = new Blob([data], { type: 'audio/wav' })
+             const b64: any = await blob2Base64(blob)
 
-            model.motion('Happy', 0, MotionPriority.NORMAL, b64)
-
+             setIsAudioReady(true)
+             model.motion('Happy', 0, MotionPriority.NORMAL, b64)
         })
     }
 
@@ -82,6 +83,7 @@ export const useModel = () => {
     return {
         model,
         app,
+        isAudioReady,
         init,
         lipSync
     }

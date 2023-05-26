@@ -1,15 +1,17 @@
-import {memo} from "react";
+import {memo, ReactNode, useMemo} from "react";
 import style from './index.module.scss'
-
 export const Bubble = memo((props: {
-    text: string,
-    needsFaceIcon: boolean
+    needsFaceIcon: boolean,
+    children: ReactNode
 }) => {
-    const { text, needsFaceIcon } = props
+    const { needsFaceIcon } = props
 
     return (
         <div className={style.container}>
-            <div>{text ?? '让我想想...'}</div>
+            <div className={style.bubbleHead}></div>
+            <div className={style.wrapper}>
+                {props.children}
+            </div>
         </div>
     )
 })
